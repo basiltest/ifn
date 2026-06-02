@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  /* neutral tokens as RGB channels (consumed by tailwind as rgb(var() / alpha)) */
+  --c-page: 242 244 246;
+  --c-card: 255 255 255;
+  --c-line: 225 232 237;
+  --c-ink: 15 20 25;
+  --c-muted: 83 100 113;
+  --c-faint: 139 152 165;
+  --c-accent: 67 56 202; /* #4338CA indigo */
+  --c-accent-hover: 55 48 163; /* #3730A3 */
+  --c-accent-soft: 238 239 254; /* #EEEFFE */
+
+  /* brand gradient — crimson → magenta → royal blue */
+  --grad: linear-gradient(90deg, #e0114a 0%, #8a1c9a 50%, #2233c4 100%);
+  /* complementary colored glow sampled from the gradient (magenta + indigo, with a crimson kiss) */
+  --glow: 0 4px 14px -3px rgba(138, 28, 154, 0.38), 0 2px 8px -4px rgba(34, 51, 196, 0.34);
+  --glow-strong: 0 12px 28px -6px rgba(224, 17, 74, 0.38), 0 8px 20px -6px rgba(34, 51, 196, 0.46);
+}
+
+.dark {
+  color-scheme: dark;
+  --c-page: 14 17 22; /* #0E1116 */
+  --c-card: 23 26 33; /* #171A21 */
+  --c-line: 38 43 51; /* #262B33 */
+  --c-ink: 231 233 234; /* #E7E9EA */
+  --c-muted: 154 166 178; /* #9AA6B2 */
+  --c-faint: 107 118 129; /* #6B7681 */
+  --c-accent: 129 140 248; /* #818CF8 indigo-400 — brighter on dark */
+  --c-accent-hover: 99 102 241; /* #6366F1 */
+  --c-accent-soft: 30 35 54; /* #1E2336 dark indigo */
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-page text-ink font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-semibold
+           transition-colors disabled:cursor-not-allowed disabled:opacity-50 select-none;
+  }
+  .btn-primary {
+    @apply btn text-white px-4 py-2 text-sm;
+    background-image: var(--grad);
+    box-shadow: var(--glow);
+    transition: filter 0.15s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  }
+  .btn-primary:hover {
+    filter: saturate(1.12) brightness(1.06);
+    box-shadow: var(--glow-strong);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: var(--glow);
+  }
+  .bg-grad {
+    background-image: var(--grad);
+  }
+  .text-grad {
+    background-image: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-ghost {
+    @apply btn text-ink hover:bg-black/5 px-4 py-2 text-sm;
+  }
+  .btn-outline {
+    @apply btn border border-line text-ink hover:bg-black/5 px-4 py-2 text-sm;
+  }
+  .card {
+    @apply bg-card border border-line rounded-xl2 shadow-card;
+  }
+  .input {
+    @apply w-full rounded-lg border border-line bg-card px-3 py-2 text-sm
+           outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 placeholder:text-faint;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-accent-soft text-accent
+           px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+/* react-big-calendar overrides to fit the IFN theme */
+.rbc-calendar {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.rbc-toolbar button {
+  border-radius: 9999px !important;
+  border-color: #e1e8ed !important;
+  color: #0f1419 !important;
+}
+.rbc-toolbar button.rbc-active {
+  background-color: #1d9bf0 !important;
+  color: #fff !important;
+  border-color: #1d9bf0 !important;
+}
+.rbc-toolbar button:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+.rbc-header,
+.rbc-month-view,
+.rbc-time-view,
+.rbc-day-bg + .rbc-day-bg,
+.rbc-month-row + .rbc-month-row {
+  border-color: #e1e8ed !important;
+}
+.rbc-off-range-bg {
+  background: #f2f4f6 !important;
+}
+.rbc-today {
+  background: #e8f5fe !important;
+}
+.rbc-event {
+  border-radius: 8px !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 1px 6px !important;
+}
+
+/* In dark mode, flip black hover overlays to subtle white */
+.dark .hover\:bg-black\/5:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* react-big-calendar — dark theme */
+.dark .rbc-toolbar button {
+  border-color: #262b33 !important;
+  color: #e7e9ea !important;
+}
+.dark .rbc-toolbar button:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+.dark .rbc-toolbar-label,
+.dark .rbc-button-link,
+.dark .rbc-date-cell,
+.dark .rbc-header {
+  color: #e7e9ea !important;
+}
+.dark .rbc-header,
+.dark .rbc-month-view,
+.dark .rbc-time-view,
+.dark .rbc-time-content,
+.dark .rbc-time-header-content,
+.dark .rbc-timeslot-group,
+.dark .rbc-day-bg + .rbc-day-bg,
+.dark .rbc-month-row + .rbc-month-row {
+  border-color: #262b33 !important;
+}
+.dark .rbc-off-range-bg {
+  background: #0e1116 !important;
+}
+.dark .rbc-off-range .rbc-button-link {
+  color: #6b7681 !important;
+}
+.dark .rbc-today {
+  background: #1e2336 !important;
+}
