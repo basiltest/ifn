@@ -13,7 +13,7 @@ const ITEMS = [
   { to: '/settings', icon: 'settings', label: 'Settings' },
 ]
 
-export default function LeftNav({ onCreate }) {
+export default function LeftNav({ onCreate, onNavigate }) {
   const { currentUser, data } = useStore()
   const role = currentUser.role
   const pendingTags = data.posts.filter((p) => p.successRequest === 'pending').length
@@ -29,6 +29,7 @@ export default function LeftNav({ onCreate }) {
             key={it.to}
             to={it.to}
             end={it.end}
+            onClick={onNavigate}
             className={({ isActive }) =>
               `group flex items-center gap-3 rounded-full px-4 py-2.5 text-[15px] font-semibold transition-colors ${
                 isActive ? 'bg-accent-soft text-accent' : 'text-ink hover:bg-black/5'
@@ -46,7 +47,13 @@ export default function LeftNav({ onCreate }) {
         )
       })}
 
-      <button onClick={onCreate} className="btn-primary mt-3 w-full py-3 text-[15px]">
+      <button
+        onClick={() => {
+          onNavigate?.()
+          onCreate()
+        }}
+        className="btn-primary mt-3 w-full py-3 text-[15px]"
+      >
         <Icon name="plus" size={18} strokeWidth={2.4} /> Create Post
       </button>
     </nav>

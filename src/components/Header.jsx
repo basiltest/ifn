@@ -15,13 +15,21 @@ export function Logo({ size = 'md' }) {
   )
 }
 
-export default function Header() {
+export default function Header({ onMenu }) {
   const { currentUser } = useStore()
   const navigate = useNavigate()
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-card/85 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4">
+        <button
+          onClick={onMenu}
+          className="-ml-1 rounded-full p-2 text-muted hover:bg-black/5 hover:text-ink lg:hidden"
+          aria-label="Open navigation"
+        >
+          <Icon name="menu" size={22} />
+        </button>
+
         <Link to="/" className="flex items-center gap-2">
           <Logo />
           <span className="hidden text-[15px] font-extrabold sm:block">
